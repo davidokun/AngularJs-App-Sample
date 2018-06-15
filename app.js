@@ -18,7 +18,7 @@ weatherApp.config(function ($routeProvider) {
 
 // Services
 weatherApp.service('cityService', function () {
-    this.city = "New York, NY";
+    this.city = "London,us";
 });
 
 // Controllers
@@ -31,7 +31,13 @@ weatherApp.controller('homeController', [
 }]);
 
 weatherApp.controller('forecastController', [
-    '$scope', 'cityService', function ($scope, cityService) {
+    '$scope', '$resource', 'cityService', function ($scope, $resource, cityService) {
 
         $scope.city = cityService.city;
+
+        $scope.weatherAPI = $resource("http://api.openweathermap.org/data/2.5/forecast");
+
+        $scope.weatherResult = $scope.weatherAPI.get({q: $scope.city, cnt: 2, APPID: ""});
+
+        console.log($scope.weatherResult);
 }]);
